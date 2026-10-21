@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jacarEV3 | Robótica Educacional 100% em Português</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-black tracking-tight">jacar<span class="text-emerald-400">EV3</span></span>
+                    <span class="block text-[10px] text-emerald-400/80 font-mono tracking-widest uppercase">Embarque Digital 2026.2</span>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#sobre" class="hover:text-emerald-400 transition">O Projeto</a>
+                <a href="#aulas" class="hover:text-emerald-400 transition">Módulos de Aula</a>
+                <a href="#acessibilidade" class="hover:text-emerald-400 transition">Acessibilidade</a>
+                <a href="#bncc" class="hover:text-emerald-400 transition">BNCC & ODS</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <a href="https://github.com/i-barbosa/jacarev3" target="_blank" class="bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition flex items-center space-x-2 shadow-sm">
+                    <i class="fab fa-github text-lg"></i>
+                    <span>Repositório</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden pt-20 pb-28 border-b border-slate-800/60">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-950/20 via-slate-950/0 to-slate-950 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-6">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Ensino Fundamental II (Anos Finais)</span>
+                </div>
+                <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-none mb-6">
+                    Robótica e Lógica <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">sem barreiras de idioma.</span>
+                </h1>
+                <p class="text-slate-400 text-lg leading-relaxed mb-8">
+                    Uma biblioteca em Python com API 100% em português para kits LEGO EV3. Projetada para escolas públicas, eliminando termos técnicos em inglês para que o aluno foque inteiramente no pensamento computacional.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+                    <div class="bg-slate-900 border border-slate-800 px-4 py-3.5 rounded-xl font-mono text-emerald-400 text-sm flex items-center justify-between select-all shadow-inner">
+                        <span>pip install jacarev3</span>
+                        <i class="fas fa-terminal text-slate-600 ml-3"></i>
+                    </div>
+                    <a href="#aulas" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3.5 rounded-xl transition text-center shadow-lg shadow-emerald-500/20">
+                        Explorar Módulos
+                    </a>
+                </div>
+            </div>
+
+            <!-- Code Preview Card -->
+            <div class="relative">
+                <div class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 opacity-20 blur-xl"></div>
+                <div class="relative bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl font-mono text-sm">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800 text-slate-500">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        </div>
+                        <span class="text-xs text-slate-400 font-sans">exemplo_pratico.py</span>
+                    </div>
+                    <pre class="text-slate-300 overflow-x-auto leading-relaxed"><code><span class="text-purple-400">from</span> jacarev3.robo <span class="text-purple-400">import</span> RoboEV3
+
+<span class="text-slate-500"># Conexão direta e intuitiva</span>
+<span class="text-purple-400">with</span> <span class="text-yellow-300">RoboEV3</span>(mac=<span class="text-orange-300">'00:16:53:...'</span>) <span class="text-purple-400">as</span> robo:
+    <span class="text-slate-500"># Comandos 100% em português</span>
+    robo.<span class="text-blue-400">apitar</span>(frequencia=<span class="text-orange-400">523</span>, duracao_ms=<span class="text-orange-400">300</span>)
+    robo.<span class="text-blue-400">led</span>(<span class="text-orange-300">'VERDE'</span>)
+    
+    <span class="text-slate-500"># Movimentação e lógica de motores</span>
+    robo.<span class="text-blue-400">girar_motor</span>(<span class="text-orange-300">'B'</span>, velocidade=<span class="text-orange-400">30</span>, duracao_ms=<span class="text-orange-400">1000</span>)</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- O Problema vs A Solução -->
+    <section id="sobre" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">Por que a <span class="text-emerald-400">jacarEV3</span> importa?</h2>
+            <p class="text-slate-400 text-lg">Estudantes do Ensino Fundamental II enfrentam uma dupla barreira ao iniciar em robótica: aprender a lógica de programação e traduzir termos técnicos em inglês simultaneamente.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-slate-900/60 border border-red-500/20 p-8 rounded-3xl relative">
+                <div class="w-12 h-12 rounded-2xl bg-red-500/10 text-red-400 flex items-center justify-center font-bold text-xl mb-6">
+                    <i class="fas fa-triangle-exclamation"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-red-300">O Desafio Tradicional</h3>
+                <p class="text-slate-400 leading-relaxed">
+                    Bibliotecas tradicionais exigem métodos como <code class="text-red-400 font-mono text-sm bg-red-950/50 px-1.5 py-0.5 rounded">run_timed</code>, <code class="text-red-400 font-mono text-sm bg-red-950/50 px-1.5 py-0.5 rounded">brake</code> e documentações densas em inglês. O professor perde precioso tempo de aula traduzindo termos em vez de ensinar o pensamento computacional.
+                </p>
+            </div>
+
+            <div class="bg-slate-900/60 border border-emerald-500/20 p-8 rounded-3xl relative">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-xl mb-6">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-emerald-300">A Solução jacarEV3</h3>
+                <p class="text-slate-400 leading-relaxed">
+                    Rotinas limpas e em português (<code class="text-emerald-400 font-mono text-sm bg-emerald-950/50 px-1.5 py-0.5 rounded">girar_motor</code>, <code class="text-emerald-400 font-mono text-sm bg-emerald-950/50 px-1.5 py-0.5 rounded">ler_sensor</code>, <code class="text-emerald-400 font-mono text-sm bg-emerald-950/50 px-1.5 py-0.5 rounded">testar_tudo</code>). Licença MIT aberta, sem dependências restritivas GPL, com simuladores virtuais e instalação via <code class="text-emerald-400 font-mono text-sm bg-emerald-950/50 px-1.5 py-0.5 rounded">pip</code>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Módulos de Aula -->
+    <section id="aulas" class="py-24 bg-slate-900/40 border-t border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Planejamento Pedagógico</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 mb-4">Módulos de Aula Integrados</h2>
+                <p class="text-slate-400">Roteiros práticos estruturados para otimizar o aproveitamento em sala de aula nas principais matérias escolares.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Matemática -->
+                <div class="bg-slate-900 border border-slate-800/80 p-8 rounded-3xl flex flex-col justify-between hover:border-emerald-500/50 transition group">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold mb-6 group-hover:scale-110 transition">
+                            <i class="fas fa-square-root-variable"></i>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Matemática</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Geometria de rotação, ângulos externos de polígonos regulares e cálculo de proporções de deslocamento.</p>
+                    </div>
+                    <a href="https://github.com/i-barbosa/jacarev3/tree/main/aulas/matematica" target="_blank" class="inline-flex items-center text-emerald-400 text-sm font-semibold hover:underline">
+                        <span>Ver roteiro</span>
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Física -->
+                <div class="bg-slate-900 border border-slate-800/80 p-8 rounded-3xl flex flex-col justify-between hover:border-blue-500/50 transition group">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl font-bold mb-6 group-hover:scale-110 transition">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Física</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Cinemática experimental, estudo prático da velocidade média e monitoramento de sensores de distância.</p>
+                    </div>
+                    <a href="https://github.com/i-barbosa/jacarev3/tree/main/aulas/fisica" target="_blank" class="inline-flex items-center text-blue-400 text-sm font-semibold hover:underline">
+                        <span>Ver roteiro</span>
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Computação -->
+                <div class="bg-slate-900 border border-slate-800/80 p-8 rounded-3xl flex flex-col justify-between hover:border-purple-500/50 transition group">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl font-bold mb-6 group-hover:scale-110 transition">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Computação</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Algoritmos sequenciais, estruturas de repetição, lógica condicional e automação de robôs autônomos.</p>
+                    </div>
+                    <a href="https://github.com/i-barbosa/jacarev3/tree/main/aulas/pensamento_computacional" target="_blank" class="inline-flex items-center text-purple-400 text-sm font-semibold hover:underline">
+                        <span>Ver roteiro</span>
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Português -->
+                <div class="bg-slate-900 border border-slate-800/80 p-8 rounded-3xl flex flex-col justify-between hover:border-orange-500/50 transition group">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-orange-500/10 text-orange-400 flex items-center justify-center text-xl font-bold mb-6 group-hover:scale-110 transition">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Português</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Textos instrucionais, coesão semântica e clareza na construção e escrita de comandos lógicos estruturados.</p>
+                    </div>
+                    <a href="https://github.com/i-barbosa/jacarev3/tree/main/aulas/portugues" target="_blank" class="inline-flex items-center text-orange-400 text-sm font-semibold hover:underline">
+                        <span>Ver roteiro</span>
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Acessibilidade e Inclusão -->
+    <section id="acessibilidade" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 p-10 sm:p-14 rounded-3xl relative overflow-hidden">
+            <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="max-w-3xl relative z-10">
+                <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Inclusão Nativa</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 mb-6">Módulos de Acessibilidade na Biblioteca</h2>
+                <p class="text-slate-300 text-lg leading-relaxed mb-8">
+                    A jacarEV3 foi construída pensando em todos os alunos. A biblioteca conta com rotinas de feedback sonoro e tátil, descrições textuais detalhadas no console compatíveis com leitores de tela, além do modo de robô virtual para garantir aprendizado mesmo sem o kit físico.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <div class="bg-slate-800/80 border border-slate-700/60 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center space-x-2">
+                        <i class="fas fa-volume-high text-emerald-400"></i>
+                        <span>Feedback Sonoro e Visual</span>
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-700/60 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center space-x-2">
+                        <i class="fas fa-universal-access text-emerald-400"></i>
+                        <span>Leitores de Tela (CLI)</span>
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-700/60 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center space-x-2">
+                        <i class="fas fa-laptop-code text-emerald-400"></i>
+                        <span>Simulador Web Virtual</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BNCC e ODS -->
+    <section id="bncc" class="py-24 bg-slate-900/40 border-t border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
+            <div>
+                <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Diretrizes Nacionais</span>
+                <h3 class="text-2xl sm:text-3xl font-bold mt-2 mb-6">Alinhamento com a BNCC da Computação</h3>
+                <ul class="space-y-4 text-slate-300 text-sm">
+                    <li class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-start space-x-3">
+                        <span class="bg-emerald-500/10 text-emerald-400 font-mono text-xs px-2 py-1 rounded">EF69CO02</span>
+                        <span>Elaborar algoritmos que envolvam instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.</span>
+                    </li>
+                    <li class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-start space-x-3">
+                        <span class="bg-emerald-500/10 text-emerald-400 font-mono text-xs px-2 py-1 rounded">EF69CO03</span>
+                        <span>Descrever com precisão a solução de um problema, construindo o programa que implementa a solução descrita.</span>
+                    </li>
+                    <li class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-start space-x-3">
+                        <span class="bg-emerald-500/10 text-emerald-400 font-mono text-xs px-2 py-1 rounded">EF69CO07</span>
+                        <span>Compreender o funcionamento básico de redes e protocolos de comunicação aplicados a dispositivos conectados.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Sustentabilidade & Impacto</span>
+                <h3 class="text-2xl sm:text-3xl font-bold mt-2 mb-6">Objetivos de Desenvolvimento Sustentável (ODS)</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl text-center">
+                        <div class="text-3xl font-black text-emerald-400 mb-2">ODS 4</div>
+                        <div class="text-xs text-slate-400">Educação de Qualidade Inclusiva</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl text-center">
+                        <div class="text-3xl font-black text-emerald-400 mb-2">ODS 9</div>
+                        <div class="text-xs text-slate-400">Inovação e Infraestrutura Aberta</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl text-center">
+                        <div class="text-3xl font-black text-emerald-400 mb-2">ODS 10</div>
+                        <div class="text-xs text-slate-400">Redução das Desigualdades Digitais</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-12 bg-slate-950">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-slate-500 text-sm">
+            <div class="mb-4 md:mb-0">
+                <span class="text-slate-300 font-bold">jacarEV3</span> • Desenvolvido para o Programa Embarque Digital (2026.2)
+            </div>
+            <div class="flex space-x-6">
+                <a href="https://github.com/i-barbosa/jacarev3" target="_blank" class="hover:text-slate-300 transition"><i class="fab fa-github text-lg"></i> GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
