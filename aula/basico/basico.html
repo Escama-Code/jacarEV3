@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Básico | jacarEV3</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased">
+
+    <!-- Header / Voltar -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="../index.html" class="flex items-center space-x-2 text-emerald-400 font-semibold hover:underline">
+                <i class="fas fa-arrow-left"></i>
+                <span>Voltar ao Início</span>
+            </a>
+            <span class="text-sm text-slate-400 font-mono">Módulo 01: Primeiros Passos</span>
+        </div>
+    </header>
+
+    <!-- Conteúdo da Aula -->
+    <main class="max-w-4xl mx-auto px-6 py-16">
+        <h1 class="text-4xl font-black mb-6">Módulo Básico: Primeiros Passos com o Sistema</h1>
+        <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+            Neste módulo, vais aprender a ligar o teu robô LEGO EV3 via Bluetooth utilizando comandos 100% em português, eliminando qualquer barreira de idioma.
+        </p>
+
+        <h2 class="text-2xl font-bold mb-4 text-emerald-400">Exemplo Prático de Código</h2>
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl font-mono text-sm mb-8 shadow-xl">
+            <pre class="text-slate-300 overflow-x-auto"><code>from jacarev3.robo import RoboEV3
+
+# Conectar informando o endereço MAC do EV3
+with RoboEV3(mac='00:16:53:64:F8:B8') as robo:
+    robo.apitar(frequencia=440, duracao_ms=500)
+    robo.led('VERDE')
+    robo.girar_motor('B', velocidade=30, duracao_ms=1000)</code></pre>
+        </div>
+
+        <h3 class="text-xl font-bold mb-3">O que cada comando faz:</h3>
+        <ul class="list-disc list-inside space-y-2 text-slate-300">
+            <li><code class="text-emerald-400 font-mono">RoboEV3(mac=...)</code>: Estabelece a ligação direta por Bluetooth.</li>
+            <li><code class="text-emerald-400 font-mono">apitar()</code>: Emite um sinal sonoro de feedback auditivo.</li>
+            <li><code class="text-emerald-400 font-mono">led()</code>: Altera a cor do painel luminoso do tijolo.</li>
+            <li><code class="text-emerald-400 font-mono">girar_motor()</code>: Ativa a porta especificada com a velocidade e duração desejada.</li>
+        </ul>
+    </main>
+
+</body>
+</html>
