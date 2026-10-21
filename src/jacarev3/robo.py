@@ -3,7 +3,7 @@ jacarev3.robo
 -----------
 RoboEV3 — mesma API de antes (apitar, led, testar_motores, testar_sensores...)
 mas agora rodando 100% no protocolo próprio (protocolo.py + conexao.py),
-sem depender do pacote `ev3_dc` (GPLv3).
+sem depender do pacote `ev3_python3` (GPLv3).
 
 AVISO: primeira versão escrita do zero — os opcodes vêm da documentação
 oficial da LEGO, mas ainda não foi validada em bateria extensa no robô
@@ -20,6 +20,7 @@ from . import protocolo as p
 from .conexao import ConexaoBluetooth
 from .erros import ErroDeParametro, ErroDePorta, ErroNoEV3
 from .transporte import Transporte
+from .acessibilidade import AcessibilidadeRobo
 
 _T = TypeVar("_T")
 
@@ -609,3 +610,10 @@ class RoboEV3:
         self.testar_motores()
         self.testar_sensores(tempo_limite=tempo_limite)
         print("Teste completo finalizado.")
+
+    def executar_com_acessibilidade(self, descricao: str, funcao_lambda):
+        """
+        Método nativo do robô para executar qualquer bloco de comando 
+        anunciando de forma acessível no terminal e disparando feedback sonoro.
+        """
+        return AcessibilidadeRobo.anunciar_e_executar(descricao, funcao_lambda, robo_instancia=self)
