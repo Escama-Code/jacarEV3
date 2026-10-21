@@ -12,24 +12,29 @@
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950">
 
     <!-- Header / Navbar -->
+<!-- Header / Navbar -->
     <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="flex items-center space-x-3">
-            <img src="assets/logo.png" alt="Logo jacarEV3" class="w-10 h-10 rounded-xl object-contain shadow-lg shadow-emerald-500/20">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between flex-nowrap">
+            <!-- Logo e Título -->
+            <div class="flex items-center space-x-3 shrink-0">
+                <img src="assets/logo.png" alt="Logo jacarEV3" class="w-10 h-10 rounded-xl object-contain shadow-lg shadow-emerald-500/20">
                 <div>
                     <span class="text-xl font-black tracking-tight">jacar<span class="text-emerald-400">EV3</span></span>
                     <span class="block text-[10px] text-emerald-400/80 font-mono tracking-widest uppercase">Embarque Digital 2026.2</span>
                 </div>
-        </div>
+            </div>
             
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+            <!-- Navegação (Com espaçamento optimizado e visível apenas em ecrãs maiores) -->
+            <nav class="hidden lg:flex items-center space-x-5 text-sm font-medium text-slate-300">
                 <a href="#sobre" class="hover:text-emerald-400 transition">O Projeto</a>
                 <a href="#aulas" class="hover:text-emerald-400 transition">Módulos de Aula</a>
-                <a href="#atividades" class="hover:text-emerald-400 transition">Atividades Práticas</a>
+                <a href="#atividades" class="hover:text-emerald-400 transition">Atividades</a>
                 <a href="#acessibilidade" class="hover:text-emerald-400 transition">Acessibilidade</a>
                 <a href="#bncc" class="hover:text-emerald-400 transition">BNCC & ODS</a>
             </nav>
 
-            <div class="flex items-center space-x-4">
+            <!-- Botão do Repositório -->
+            <div class="flex items-center space-x-4 shrink-0">
                 <a href="https://github.com/i-barbosa/jacarev3" target="_blank" class="bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition flex items-center space-x-2 shadow-sm">
                     <i class="fab fa-github text-lg"></i>
                     <span>Repositório</span>
