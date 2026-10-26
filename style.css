@@ -1,0 +1,50 @@
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+        
+        /* High contrast mode overrides */
+        body.high-contrast {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        body.high-contrast .bg-slate-900,
+        body.high-contrast .bg-slate-950,
+        body.high-contrast .bg-slate-900\/60,
+        body.high-contrast .bg-slate-900\/40 {
+            background-color: #0d0d0d !important;
+            border-color: #ffffff !important;
+        }
+        body.high-contrast text, body.high-contrast p, body.high-contrast span {
+            color: #ffffff !important;
+        }
+        body.high-contrast .text-emerald-400,
+        body.high-contrast .text-emerald-300 {
+            color: #00ff66 !important;
+        }
+
+        /* Glassmorphism subtle effects */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Code highlight simulated styling */
+        .code-keyword { color: #c084fc; font-weight: 600; }
+        .code-string { color: #fb923c; }
+        .code-function { color: #60a5fa; }
+        .code-comment { color: #64748b; font-style: italic; }
+        .code-number { color: #facc15; }
+        .code-class { color: #f43f5e; font-weight: 600; }
