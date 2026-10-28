@@ -2,12 +2,53 @@
    SYSTEM & UTILITY FUNCTIONS
    ==================================================================== */
 
-const btnContrast = document.getElementById('btn-contrast');
-btnContrast?.addEventListener('click', () => {
-    document.body.classList.toggle('high-contrast');
-    const isHC = document.body.classList.contains('high-contrast');
-    showToast(isHC ? 'Modo Alto Contraste Ativado' : 'Modo Padrão Ativado', 'info');
-});
+/* Tema: auto | light | dark (preferência do sistema em auto) */
+const THEME_KEY = 'jacarev3-theme';
+const themeOrder = ['auto', 'light', 'dark'];
+
+function resolveDark(pref) {
+    if (pref === 'dark') return true;
+    if (pref === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+function applyTheme(pref) {
+    const dark = resolveDark(pref);
+    document.documentElement.setAttribute('data-theme', pref);
+    document.documentElement.classList.toggle('dark', dark);
+    document.documentElement.classList.toggle('theme-light', !dark);
+    try { localStorage.setItem(THEME_KEY, pref); } catch (_) {}
+    const icon = document.getElementById('theme-icon');
+    const label = document.getElementById('theme-label');
+    if (icon) {
+        icon.className = 'fas ' + (pref === 'auto' ? 'fa-circle-half-stroke' : pref === 'light' ? 'fa-sun' : 'fa-moon');
+    }
+    if (label) {
+        label.textContent = pref === 'auto' ? 'Auto' : pref === 'light' ? 'Claro' : 'Escuro';
+    }
+}
+
+function cycleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme') || localStorage.getItem(THEME_KEY) || 'auto';
+    const i = themeOrder.indexOf(cur);
+    const next = themeOrder[(i + 1) % themeOrder.length];
+    applyTheme(next);
+    const msg = next === 'auto' ? 'Tema automático (sistema)' : next === 'light' ? 'Tema claro' : 'Tema escuro';
+    showToast(msg, 'info');
+}
+
+const btnTheme = document.getElementById('btn-theme');
+btnTheme?.addEventListener('click', cycleTheme);
+
+// sincroniza se o SO mudar e o modo for auto
+try {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        const pref = localStorage.getItem(THEME_KEY) || 'auto';
+        if (pref === 'auto') applyTheme('auto');
+    });
+} catch (_) {}
+
+applyTheme(localStorage.getItem(THEME_KEY) || 'auto');
 
 const btnMobileMenu = document.getElementById('btn-mobile-menu');
 const mobileMenu = document.getElementById('mobile-menu');
@@ -54,11 +95,24 @@ async function copyText(text, successMsg) {
 }
 
 function filterApiMethods() {
-    const query = document.getElementById('api-search')?.value.toLowerCase() || '';
+    const query = (document.getElementById('api-search')?.value || '').toLowerCase().trim();
     const items = document.querySelectorAll('.api-item');
+    let visible = 0;
     items.forEach(item => {
-        item.style.display = item.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+        const ok = !query || item.textContent.toLowerCase().includes(query);
+        item.style.display = ok ? '' : 'none';
+        if (ok) visible++;
     });
+    document.querySelectorAll('.api-card').forEach(card => {
+        const any = [...card.querySelectorAll('.api-item')].some(i => i.style.display !== 'none');
+        card.style.display = any ? '' : 'none';
+    });
+    const st = document.getElementById('api-search-status');
+    if (st) {
+        st.textContent = query
+            ? (visible ? visible + ' comando(s) encontrado(s)' : 'Nenhum comando correspondente')
+            : '';
+    }
 }
 
 function toggleFaq(btn) {
@@ -225,7 +279,17 @@ base.mover(30, 0.5)
 };
 
 const editorArea = document.getElementById('code-editor');
-if (editorArea) editorArea.value = PRESETS.mover_frente;
+if (editorArea) {
+    editorArea.value = PRESETS.mover_frente;
+    editorArea.readOnly = true;
+    editorArea.addEventListener('keydown', (e) => {
+        // permite copiar / selecionar, bloqueia edição
+        const ok = e.ctrlKey || e.metaKey || e.altKey
+            || ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','PageUp','PageDown','Tab'].includes(e.key);
+        if (!ok && e.key.length === 1) e.preventDefault();
+        if (['Backspace','Delete','Enter'].includes(e.key)) e.preventDefault();
+    });
+}
 
 function applyPresetCode(key) {
     if (PRESETS[key] && editorArea) {
@@ -348,7 +412,16 @@ function init3DSimulator() {
     const obsMat = new THREE.MeshStandardMaterial({ color: 0xf43f5e });
     obstacleMesh = new THREE.Mesh(obsGeo, obsMat);
     obstacleMesh.position.set(0, 0.25, -1.8);
+    obstacleMesh.castShadow = true;
     scene.add(obstacleMesh);
+    // física simples do cubo vermelho
+    window.__obsPhys = {
+        vel: new THREE.Vector3(0, 0, 0),
+        angVel: new THREE.Vector3(0, 0, 0),
+        half: 0.3,
+        mass: 1.2,
+        onGround: true,
+    };
 
     // Trail
     trailGeometry = new THREE.BufferGeometry();
@@ -372,6 +445,7 @@ function init3DSimulator() {
     function animate() {
         requestAnimationFrame(animate);
         if (controls) controls.update();
+        stepObstaclePhysics();
         if (distDisplayEl && robotGroup && obstacleMesh) {
             const dist = Math.round(robotGroup.position.distanceTo(obstacleMesh.position) * 100);
             distDisplayEl.textContent = `${Math.max(5, dist)} cm`;
@@ -381,18 +455,117 @@ function init3DSimulator() {
     animate();
 }
 
+/** Física do cubo vermelho: gravidade, chão, atrito e empurrão do robô */
+function stepObstaclePhysics() {
+    if (!obstacleMesh || !window.__obsPhys) return;
+    const P = window.__obsPhys;
+    const dt = 1 / 60;
+    const g = -9.5;
+    const floorY = 0.25; // centro do cubo no chão
+    const half = P.half;
+
+    // Colisão / empurrão com o robô
+    if (robotGroup) {
+        const dx = obstacleMesh.position.x - robotGroup.position.x;
+        const dz = obstacleMesh.position.z - robotGroup.position.z;
+        const dist = Math.hypot(dx, dz);
+        const minDist = half + 0.35; // cubo + robô aproximado
+        if (dist < minDist && dist > 1e-4) {
+            const nx = dx / dist, nz = dz / dist;
+            const overlap = minDist - dist;
+            obstacleMesh.position.x += nx * overlap * 0.85;
+            obstacleMesh.position.z += nz * overlap * 0.85;
+            // impulso proporcional à “velocidade” do contato
+            const push = 2.8 + overlap * 6;
+            P.vel.x += nx * push;
+            P.vel.z += nz * push;
+            P.vel.y += 1.2 + overlap * 2;
+            P.angVel.x += (Math.random() - 0.5) * 4;
+            P.angVel.z += (Math.random() - 0.5) * 4;
+            P.onGround = false;
+        }
+    }
+
+    // Gravidade
+    if (!P.onGround || P.vel.y !== 0) {
+        P.vel.y += g * dt;
+    }
+
+    obstacleMesh.position.x += P.vel.x * dt;
+    obstacleMesh.position.y += P.vel.y * dt;
+    obstacleMesh.position.z += P.vel.z * dt;
+
+    // Rotação livre no ar / ao ser empurrado
+    obstacleMesh.rotation.x += P.angVel.x * dt;
+    obstacleMesh.rotation.y += P.angVel.y * dt;
+    obstacleMesh.rotation.z += P.angVel.z * dt;
+
+    // Chão
+    if (obstacleMesh.position.y <= floorY) {
+        obstacleMesh.position.y = floorY;
+        if (P.vel.y < 0) {
+            P.vel.y *= -0.35; // quique amortecido
+            if (Math.abs(P.vel.y) < 0.4) {
+                P.vel.y = 0;
+                P.onGround = true;
+                // deita estável
+                obstacleMesh.rotation.x *= 0.5;
+                obstacleMesh.rotation.z *= 0.5;
+                P.angVel.multiplyScalar(0.5);
+            }
+        } else {
+            P.onGround = true;
+        }
+        // atrito no chão
+        P.vel.x *= 0.92;
+        P.vel.z *= 0.92;
+        P.angVel.multiplyScalar(0.9);
+        if (Math.hypot(P.vel.x, P.vel.z) < 0.05) {
+            P.vel.x = 0;
+            P.vel.z = 0;
+        }
+    } else {
+        P.onGround = false;
+        P.angVel.multiplyScalar(0.995);
+    }
+
+    // Limites da arena (~ grade 1m)
+    const lim = 2.2;
+    ['x', 'z'].forEach((axis) => {
+        if (obstacleMesh.position[axis] > lim) {
+            obstacleMesh.position[axis] = lim;
+            P.vel[axis] *= -0.5;
+        } else if (obstacleMesh.position[axis] < -lim) {
+            obstacleMesh.position[axis] = -lim;
+            P.vel[axis] *= -0.5;
+        }
+    });
+}
+
+
 function resetSimulation() {
     if (currentAbortController) {
         currentAbortController.abort();
         currentAbortController = null;
     }
     isSimulating = false;
-    robotGroup.position.set(0, 0, 0);
-    robotGroup.rotation.set(0, 0, 0);
+    if (robotGroup) {
+        robotGroup.position.set(0, 0, 0);
+        robotGroup.rotation.set(0, 0, 0);
+    }
     robotRotation = 0;
     if (ledMesh) ledMesh.material.emissive.setHex(0x000000);
     clearTrail();
-    
+    // reposiciona cubo vermelho e zera física
+    if (obstacleMesh) {
+        obstacleMesh.position.set(0, 0.25, -1.8);
+        obstacleMesh.rotation.set(0, 0, 0);
+    }
+    if (window.__obsPhys) {
+        window.__obsPhys.vel.set(0, 0, 0);
+        window.__obsPhys.angVel.set(0, 0, 0);
+        window.__obsPhys.onGround = true;
+    }
     const statusText = document.getElementById('sim-status-text');
     if (statusText) {
         statusText.textContent = "Robô Pronto";

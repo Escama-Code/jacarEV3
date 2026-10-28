@@ -48,3 +48,78 @@
         .code-comment { color: #64748b; font-style: italic; }
         .code-number { color: #facc15; }
         .code-class { color: #f43f5e; font-weight: 600; }
+
+/* —— Tema claro / escuro (overrides sobre classes Tailwind fixas) —— */
+.logo-escama {
+  /* no fundo escuro: logo escura vira clara */
+  filter: brightness(0) invert(1);
+}
+html.theme-light .logo-escama {
+  filter: none; /* no claro, mantém original (preto sobre fundo claro) */
+}
+
+html.theme-light body {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+html.theme-light header,
+html.theme-light #mobile-menu {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: #e2e8f0 !important;
+}
+html.theme-light .logo-title { color: #0f172a !important; }
+html.theme-light nav a,
+html.theme-light #mobile-menu a {
+  color: #334155 !important;
+}
+html.theme-light nav a:hover,
+html.theme-light #mobile-menu a:hover {
+  color: #059669 !important;
+}
+html.theme-light footer {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+html.theme-light section {
+  border-color: #e2e8f0 !important;
+}
+html.theme-light .bg-slate-950,
+html.theme-light .bg-slate-900,
+html.theme-light .bg-slate-900\/60 {
+  background-color: #ffffff !important;
+}
+html.theme-light .bg-slate-950\/90 {
+  background-color: rgba(255,255,255,.92) !important;
+}
+html.theme-light .border-slate-800,
+html.theme-light .border-slate-800\/80,
+html.theme-light .border-slate-800\/60,
+html.theme-light .border-slate-700\/60 {
+  border-color: #e2e8f0 !important;
+}
+html.theme-light .text-slate-100,
+html.theme-light .text-white {
+  color: #0f172a !important;
+}
+html.theme-light .text-slate-300,
+html.theme-light .text-slate-400,
+html.theme-light .text-slate-500 {
+  color: #475569 !important;
+}
+html.theme-light .bg-slate-900\/80,
+html.theme-light .bg-slate-800 {
+  background-color: #f1f5f9 !important;
+}
+html.theme-light #btn-theme,
+html.theme-light #btn-mobile-menu {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+html.theme-light .api-card,
+html.theme-light [class*="rounded-3xl"].bg-slate-900 {
+  background-color: #fff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+}

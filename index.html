@@ -39,6 +39,20 @@
     
     <!-- Seu CSS e Script -->
     <link rel="stylesheet" href="style.css">
+
+    <script>
+    /* theme-boot: aplica tema antes do paint para evitar flash */
+    (function () {
+      try {
+        var k = 'jacarev3-theme';
+        var pref = localStorage.getItem(k) || 'auto';
+        var dark = pref === 'dark' || (pref === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.setAttribute('data-theme', pref);
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.classList.toggle('theme-light', !dark);
+      } catch (e) {}
+    })();
+    </script>
 </head> 
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
@@ -48,13 +62,12 @@
     <!-- Header / Navbar -->
     <header class="border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
-            <!-- Logo e Título -->
-            <a href="#" class="flex items-center space-x-3 shrink-0 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition">
-                    <i class="fas fa-robot"></i>
-                </div>
+            <!-- Logo da biblioteca -->
+            <a href="#" class="flex items-center space-x-3 shrink-0 group" title="jacarEV3 — início">
+                <img src="assets/logo.png" alt="Logo jacarEV3" width="40" height="40"
+                     class="w-10 h-10 rounded-xl object-contain shadow-lg shadow-emerald-500/15 group-hover:scale-105 transition bg-slate-900/40 p-0.5">
                 <div>
-                    <span class="text-xl font-black tracking-tight text-white group-hover:text-emerald-400 transition">jacar<span class="text-emerald-400">EV3</span></span>
+                    <span class="text-xl font-black tracking-tight text-white group-hover:text-emerald-400 transition logo-title">jacar<span class="text-emerald-400">EV3</span></span>
                     <span class="block text-[10px] text-emerald-400/80 font-mono tracking-widest uppercase">Embarque Digital 2026.2</span>
                 </div>
             </a>
@@ -76,8 +89,11 @@
             <!-- Ações Direitas (Acessibilidade + Github + Mobile Toggle) -->
             <div class="flex items-center space-x-3 shrink-0">
                 <!-- Botão de Alto Contraste -->
-                <button id="btn-contrast" title="Alternar Alto Contraste" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-emerald-400 transition flex items-center justify-center">
-                    <i class="fas fa-circle-half-stroke text-lg"></i>
+                                <button id="btn-theme" type="button" title="Tema: automático / claro / escuro"
+                    class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-emerald-400 transition flex items-center justify-center gap-1.5 min-w-[2.75rem]"
+                    aria-label="Alternar tema">
+                    <i id="theme-icon" class="fas fa-circle-half-stroke"></i>
+                    <span id="theme-label" class="hidden sm:inline text-[10px] font-bold uppercase tracking-wide">Auto</span>
                 </button>
 
                 <!-- Botão Repositório -->
@@ -105,9 +121,13 @@
             <a href="#educadores" class="block hover:text-emerald-400 transition py-1">Central do Educador</a>
             <a href="#bncc" class="block hover:text-emerald-400 transition py-1">BNCC & ODS</a>
             <a href="#faq" class="block hover:text-emerald-400 transition py-1">Perguntas Frequentes</a>
-            <a href="https://github.com/i-barbosa/jacarev3" target="_blank" class="inline-flex items-center space-x-2 text-emerald-400 pt-2">
+            <a href="https://github.com/i-barbosa/jacarev3" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-emerald-400 pt-2">
                 <i class="fab fa-github"></i>
-                <span>Ver Repositório GitHub</span>
+                <span>Repositório jacarEV3</span>
+            </a>
+            <a href="https://github.com/Escama-Code" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-slate-300 hover:text-emerald-400 pt-1">
+                <img src="assets/escama-logo.png" alt="" class="h-6 w-auto object-contain logo-escama">
+                <span>Organização Escama Code</span>
             </a>
         </div>
     </header>
@@ -214,13 +234,19 @@
                         <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Laboratório Virtual Integrado</span>
                         <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-1">Simulador Web 3D em Tempo Real</h2>
                         <p class="text-slate-400 text-sm mt-2 max-w-2xl">
-                            Sem robô físico? Escreva código Python em português no editor abaixo e veja a simulação 3D em tempo real com física de colisões e efeitos sonoros!
+                            Demo interativa com roteiros prontos (código bloqueado para edição). O cubo vermelho tem física simples de colisão.
+                            Para programar de verdade — campanha, sandbox e biblioteca completa — use a IDE jacarEV3.
                         </p>
                     </div>
-                    <div class="flex items-center space-x-2 shrink-0">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
+                        <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                             <i class="fas fa-microchip mr-1.5"></i> Pyodide / Three.js
                         </span>
+                        <a href="https://escama-code.github.io/jacarEV3-IDE/public/" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-lg shadow-emerald-500/20 transition">
+                            <i class="fas fa-external-link-alt text-xs"></i>
+                            Abrir IDE completa
+                        </a>
                     </div>
                 </div>
 
@@ -248,13 +274,21 @@
                         </div>
 
                         <!-- Editable Textarea -->
-                        <textarea id="code-editor" class="w-full flex-grow bg-slate-950 border-x border-b border-slate-800 rounded-b-xl p-3 font-mono text-xs text-emerald-300 focus:outline-none resize-none leading-relaxed" spellcheck="false"></textarea>
+                        <textarea id="code-editor" readonly tabindex="0"
+                            class="w-full flex-grow bg-slate-950 border-x border-b border-slate-800 rounded-b-xl p-3 font-mono text-xs text-emerald-300/90 focus:outline-none resize-none leading-relaxed cursor-default opacity-95"
+                            spellcheck="false" aria-readonly="true"
+                            title="Código de demonstração — somente leitura. Programe na IDE completa."></textarea>
+                        <p class="mt-2 text-[11px] text-slate-500 flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <span class="inline-flex items-center gap-1 text-amber-400/90"><i class="fas fa-lock text-[10px]"></i> Somente leitura nesta página</span>
+                            <span class="text-slate-600">·</span>
+                            <a href="https://escama-code.github.io/jacarEV3-IDE/public/" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline">Editar e criar código na IDE →</a>
+                        </p>
 
                         <!-- Control Buttons -->
                         <div class="mt-4 flex items-center justify-between gap-3">
                             <button id="btn-run-sim" onclick="runSimulation()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20 text-sm">
                                 <i class="fas fa-play"></i>
-                                <span>Executar Código</span>
+                                <span>Executar demo</span>
                             </button>
                             <button onclick="resetSimulation()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2.5 px-4 rounded-xl transition flex items-center justify-center space-x-1.5 text-sm" title="Resetar Robô">
                                 <i class="fas fa-rotate-left"></i>
@@ -462,126 +496,321 @@
             </div>
         </section>
 
-        <!-- Seção Referência da API (Cheat Sheet) -->
+
+        <!-- Seção Referência da API (completa, estilo site) -->
         <section id="api" class="py-24 max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Documentação Simplificada</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-1 mb-4">Guia Rápido da API jacarEV3</h2>
-                <p class="text-slate-400">Consulte abaixo a lista de comandos disponíveis com busca dinâmica em tempo real.</p>
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Referência completa</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-1 mb-4">Guia da API jacarEV3</h2>
+                <p class="text-slate-400">Todos os comandos principais da biblioteca, no mesmo estilo desta página — com busca e cópia rápida. Rode dentro de <code class="text-emerald-300 text-sm">with RoboEV3(...) as robo:</code>.</p>
             </div>
 
-            <!-- Filter Search Bar -->
-            <div class="max-w-md mx-auto mb-10 relative">
+            <div class="max-w-xl mx-auto mb-4 relative">
                 <i class="fas fa-search absolute left-4 top-3.5 text-slate-500"></i>
-                <input id="api-search" type="text" onkeyup="filterApiMethods()" placeholder="Buscar por comando ex: 'motor', 'sensor', 'apitar'..." class="w-full bg-slate-900 border border-slate-800 text-slate-200 pl-11 pr-4 py-3 rounded-2xl focus:outline-none focus:border-emerald-500 text-sm transition">
+                <input id="api-search" type="text" onkeyup="filterApiMethods()" placeholder="Buscar: motor, sensor, led, seguir_linha, ConexaoFalsa…"
+                    class="w-full bg-slate-900 border border-slate-800 text-slate-200 pl-11 pr-4 py-3 rounded-2xl focus:outline-none focus:border-emerald-500 text-sm transition">
             </div>
+            <p id="api-search-status" class="text-center text-xs text-slate-500 mb-10 min-h-[1rem]"></p>
 
-            <!-- API Grid categories -->
-            <div id="api-grid" class="grid md:grid-cols-3 gap-6 font-mono text-sm">
-                
-                <!-- Motores & Atuação -->
-                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center space-x-3 text-emerald-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
-                            <i class="fas fa-cog text-xl"></i>
-                            <span>Atuação & Motores</span>
-                        </div>
-                        <ul class="space-y-4 text-xs font-sans">
-                            <li class="api-item">
-                                <div class="flex items-center justify-between font-mono font-bold text-emerald-300 text-sm">
-                                    <span>girar_motor(porta, vel, tempo_ms)</span>
-                                    <button onclick="copyText('robo.girar_motor(\'B\', 30, 1000)', 'Comando girar_motor copiado!')" class="text-slate-500 hover:text-emerald-400"><i class="fas fa-copy"></i></button>
-                                </div>
-                                <p class="text-slate-400 mt-1">Gira o motor na porta especificada ('A', 'B', 'C' ou 'D') na velocidade (-100 a 100) pelo tempo em milissegundos.</p>
-                            </li>
-                            <li class="api-item">
-                                <div class="flex items-center justify-between font-mono font-bold text-emerald-300 text-sm">
-                                    <span>mover_base(velocidade, tempo_ms)</span>
-                                    <button onclick="copyText('robo.mover_base(40, 2000)', 'Comando mover_base copiado!')" class="text-slate-500 hover:text-emerald-400"><i class="fas fa-copy"></i></button>
-                                </div>
-                                <p class="text-slate-400 mt-1">Move a base diferencial de locomoção em linha reta.</p>
-                            </li>
-                            <li class="api-item">
-                                <div class="flex items-center justify-between font-mono font-bold text-emerald-300 text-sm">
-                                    <span>parar_motores()</span>
-                                    <button onclick="copyText('robo.parar_motores()', 'Comando parar_motores copiado!')" class="text-slate-500 hover:text-emerald-400"><i class="fas fa-copy"></i></button>
-                                </div>
-                                <p class="text-slate-400 mt-1">Interrompe o movimento de todos os motores conectados imediatamente.</p>
-                            </li>
-                        </ul>
+            <!-- Categorias em grid -->
+            <div id="api-grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-6 font-mono text-sm">
+
+                <!-- Conexão -->
+                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col">
+                    <div class="flex items-center space-x-3 text-emerald-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
+                        <i class="fas fa-bluetooth text-xl"></i>
+                        <span>Conexão</span>
                     </div>
+                    <ul class="space-y-4 text-xs font-sans">
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>RoboEV3(mac, timeout=10, base=('B','C'))</span>
+                                <button type="button" onclick="copyText('from jacarev3 import RoboEV3\n\nwith RoboEV3(\'00:16:53:64:F8:B8\') as robo:\n    robo.led(\'VERDE\')', 'Exemplo RoboEV3 copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Abre a conexão Bluetooth com o brick. Use sempre com <code class="text-slate-300">with</code> para fechar sozinho.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>robo.definir_base(esq, dir)</span>
+                                <button type="button" onclick="copyText('robo.definir_base(\'C\', \'B\')', 'definir_base copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Define quais portas são esquerda/direita da base motriz.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>robo.fechar()</span>
+                                <button type="button" onclick="copyText('robo.fechar()', 'fechar copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Encerra a conexão (o <code class="text-slate-300">with</code> já faz isso ao sair).</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Motores -->
+                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col">
+                    <div class="flex items-center space-x-3 text-emerald-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
+                        <i class="fas fa-cog text-xl"></i>
+                        <span>Motores (A–D)</span>
+                    </div>
+                    <ul class="space-y-4 text-xs font-sans">
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>girar_motor(porta, vel, tempo_ms)</span>
+                                <button type="button" onclick="copyText('robo.girar_motor(\'B\', 50, 2000)', 'girar_motor copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Gira por tempo. Velocidade −100…100; o EV3 controla a duração.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>mover_continuo(porta, velocidade)</span>
+                                <button type="button" onclick="copyText('robo.mover_continuo(\'B\', 40)', 'mover_continuo copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Liga e deixa rodando — ideal em loops (linha, desvio). Pare com <code class="text-slate-300">parar_motor</code>.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>parar_motor(porta, frear=True)</span>
+                                <button type="button" onclick="copyText('robo.parar_motor(\'B\')', 'parar_motor copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Para na hora. <code class="text-slate-300">frear=True</code> trava; <code class="text-slate-300">False</code> deixa rodar livre.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>girar_motor_graus(porta, graus, vel=30)</span>
+                                <button type="button" onclick="copyText('robo.girar_motor_graus(\'B\', 720, velocidade=50)', 'girar_motor_graus copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Gira graus exatos via encoder. Sinal da velocidade define o sentido.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>girar_motor_voltas(porta, voltas, **kw)</span>
+                                <button type="button" onclick="copyText('robo.girar_motor_voltas(\'B\', 2.5, velocidade=40)', 'girar_motor_voltas copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Como graus, mas em voltas (aceita fração, ex.: 0.5).</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>ler_graus_motor / zerar_graus_motor</span>
+                                <button type="button" onclick="copyText('robo.zerar_graus_motor(\'B\')\nprint(robo.ler_graus_motor(\'B\'))', 'encoder copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Lê ou zera a contagem do encoder da porta.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-emerald-300 text-sm">
+                                <span>motor_ocupado / esperar_motor</span>
+                                <button type="button" onclick="copyText('robo.girar_motor_graus(\'B\', 720, esperar=False)\nwhile robo.motor_ocupado(\'B\'):\n    pass', 'motor_ocupado copiado!')" class="text-slate-500 hover:text-emerald-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Consulta se o motor ainda executa, ou espera terminar.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Base motriz -->
+                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col">
+                    <div class="flex items-center space-x-3 text-teal-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
+                        <i class="fas fa-robot text-xl"></i>
+                        <span>Base motriz</span>
+                    </div>
+                    <ul class="space-y-4 text-xs font-sans">
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-teal-300 text-sm">
+                                <span>mover_base(vel, direcao=0, duracao_ms)</span>
+                                <button type="button" onclick="copyText('robo.mover_base(30, direcao=0, duracao_ms=1000)', 'mover_base copiado!')" class="text-slate-500 hover:text-teal-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Move os dois motores da base. <code class="text-slate-300">direcao</code> curva (negativo/positivo).</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-teal-300 text-sm">
+                                <span>mover_base_graus(...)</span>
+                                <button type="button" onclick="copyText('robo.mover_base_graus(velocidade=30, graus=360)', 'mover_base_graus copiado!')" class="text-slate-500 hover:text-teal-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Deslocamento da base por graus sincronizados nos dois motores.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-teal-300 text-sm">
+                                <span>parar_base(frear=True)</span>
+                                <button type="button" onclick="copyText('robo.parar_base()', 'parar_base copiado!')" class="text-slate-500 hover:text-teal-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Para os dois motores da base de uma vez.</p>
+                        </li>
+                    </ul>
                 </div>
 
                 <!-- Sensores -->
-                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center space-x-3 text-blue-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
-                            <i class="fas fa-eye text-xl"></i>
-                            <span>Leitura de Sensores</span>
-                        </div>
-                        <ul class="space-y-4 text-xs font-sans">
-                            <li class="api-item">
-                                <div class="flex items-center justify-between font-mono font-bold text-blue-300 text-sm">
-                                    <span>ler_sensor_ultrassonico(porta)</span>
-                                    <button onclick="copyText('robo.ler_sensor_ultrassonico(1)', 'Comando ultrassônico copiado!')" class="text-slate-500 hover:text-blue-400"><i class="fas fa-copy"></i></button>
-                                </div>
-                                <p class="text-slate-400 mt-1">Retorna a distância medida em centímetros em relação ao obstáculo mais próximo.</p>
-                            </li>
-                            <li class="api-item">
-                                <div class="flex items-center justify-between font-mono font-bold text-blue-300 text-sm">
-                                    <span>ler_sensor_cor(porta)</span>
-                                    <button onclick="copyText('robo.ler_sensor_cor(2)', 'Comando sensor cor copiado!')" class="text-slate-500 hover:text-blue-400"><i class="fas fa-copy"></i></button>
-                                </div>
-                                <p class="text-slate-400 mt-1">Identifica a cor do objeto ou linha no chão ('VERMELHO', 'VERDE', 'AZUL', 'PRETO', etc).</p>
-                            </li>
-                            <li class="api-item">
-                                <div class="flex items-center justify-between font-mono font-bold text-blue-300 text-sm">
-                                    <span>ler_sensor_toque(porta)</span>
-                                    <button onclick="copyText('robo.ler_sensor_toque(3)', 'Comando sensor toque copiado!')" class="text-slate-500 hover:text-blue-400"><i class="fas fa-copy"></i></button>
-                                </div>
-                                <p class="text-slate-400 mt-1">Retorna Verdadeiro se o botão físico do sensor estiver pressionado.</p>
-                            </li>
-                        </ul>
+                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col">
+                    <div class="flex items-center space-x-3 text-blue-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
+                        <i class="fas fa-satellite-dish text-xl"></i>
+                        <span>Sensores (1–4)</span>
                     </div>
+                    <ul class="space-y-4 text-xs font-sans">
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-blue-300 text-sm">
+                                <span>ler_sensor(porta, modo)</span>
+                                <button type="button" onclick="copyText('from jacarev3 import RoboEV3, protocolo as p\nluz = robo.ler_sensor(3, p.MODO_COR_REFLETIDA)', 'ler_sensor copiado!')" class="text-slate-500 hover:text-blue-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Leitura genérica. Modos em <code class="text-slate-300">jacarev3.protocolo</code> (refletida, ultrassônico, toque…).</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-blue-300 text-sm">
+                                <span>espera_mudar(porta, modo, …)</span>
+                                <button type="button" onclick="copyText('robo.espera_mudar(4, p.MODO_US_CM)', 'espera_mudar copiado!')" class="text-slate-500 hover:text-blue-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Bloqueia até a leitura do sensor mudar (útil em testes e demos).</p>
+                        </li>
+                    </ul>
                 </div>
 
-                <!-- Feedback & Sistema -->
-                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center space-x-3 text-purple-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
-                            <i class="fas fa-volume-high text-xl"></i>
-                            <span>Sinais & Sistema</span>
-                        </div>
-                        <ul class="space-y-4 text-xs font-sans">
-                            <li class="api-item">
-                                <div class="flex items-center justify-between font-mono font-bold text-purple-300 text-sm">
-                                    <span>apitar(frequencia_hz, duracao_ms)</span>
-                                    <button onclick="copyText('robo.apitar(440, 500)', 'Comando apitar copiado!')" class="text-slate-500 hover:text-purple-400"><i class="fas fa-copy"></i></button>
-                                </div>
-                                <p class="text-slate-400 mt-1">Emite um tom sonoro na frequência especificada em Hertz.</p>
-                            </li>
-                            <li class="api-item">
-                                <div class="flex items-center justify-between font-mono font-bold text-purple-300 text-sm">
-                                    <span>led(cor_string)</span>
-                                    <button onclick="copyText('robo.led(\'VERDE\')', 'Comando led copiado!')" class="text-slate-500 hover:text-purple-400"><i class="fas fa-copy"></i></button>
-                                </div>
-                                <p class="text-slate-400 mt-1">Altera os LEDs do bloco EV3 ('VERDE', 'VERMELHO', 'LARANJA', 'DESLIGADO').</p>
-                            </li>
-                            <li class="api-item">
-                                <div class="flex items-center justify-between font-mono font-bold text-purple-300 text-sm">
-                                    <span>executar_com_acessibilidade(...)</span>
-                                    <button onclick="copyText('robo.executar_com_acessibilidade(\'Iniciando\', lambda: robo.mover_base(30,1000))', 'Comando acessibilidade copiado!')" class="text-slate-500 hover:text-purple-400"><i class="fas fa-copy"></i></button>
-                                </div>
-                                <p class="text-slate-400 mt-1">Gera descrição audível e textual com leitor de tela para alunos com deficiência visual.</p>
-                            </li>
-                        </ul>
+                <!-- Som e LED -->
+                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col">
+                    <div class="flex items-center space-x-3 text-purple-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
+                        <i class="fas fa-volume-high text-xl"></i>
+                        <span>Som &amp; LED</span>
                     </div>
+                    <ul class="space-y-4 text-xs font-sans">
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-purple-300 text-sm">
+                                <span>apitar(freq=440, duracao_ms=500, volume=1)</span>
+                                <button type="button" onclick="copyText('robo.apitar(440, 500)', 'apitar copiado!')" class="text-slate-500 hover:text-purple-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Tom no brick. Frequência em Hz, duração em ms.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-purple-300 text-sm">
+                                <span>led(cor)</span>
+                                <button type="button" onclick="copyText('robo.led(\'VERDE\')', 'led copiado!')" class="text-slate-500 hover:text-purple-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">LED dos botões: VERDE, VERMELHO, LARANJA, DESLIGADO (e variantes).</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Testes -->
+                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col">
+                    <div class="flex items-center space-x-3 text-amber-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
+                        <i class="fas fa-stethoscope text-xl"></i>
+                        <span>Testes &amp; diagnóstico</span>
+                    </div>
+                    <ul class="space-y-4 text-xs font-sans">
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-amber-300 text-sm">
+                                <span>testar_motor / testar_motores</span>
+                                <button type="button" onclick="copyText('robo.testar_motores()', 'testar_motores copiado!')" class="text-slate-500 hover:text-amber-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Gira portas para frente/trás e imprime status no console.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-amber-300 text-sm">
+                                <span>testar_ultrassonico / toque / cor</span>
+                                <button type="button" onclick="copyText('robo.testar_ultrassonico(4)', 'testar sensor copiado!')" class="text-slate-500 hover:text-amber-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Pede interação (mão, botão, cor) e confirma a leitura.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-amber-300 text-sm">
+                                <span>testar_sensores / testar_tudo</span>
+                                <button type="button" onclick="copyText('robo.testar_tudo()', 'testar_tudo copiado!')" class="text-slate-500 hover:text-amber-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Varredura completa de motores e sensores ativos.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tópicos prontos -->
+                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col">
+                    <div class="flex items-center space-x-3 text-cyan-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
+                        <i class="fas fa-route text-xl"></i>
+                        <span>Tópicos prontos</span>
+                    </div>
+                    <ul class="space-y-4 text-xs font-sans">
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-cyan-300 text-sm">
+                                <span>seguir_linha(...)</span>
+                                <button type="button" onclick="copyText('from jacarev3.topicos.circuito import seguir_linha\nseguir_linha(robo, porta_sensor=3)', 'seguir_linha copiado!')" class="text-slate-500 hover:text-cyan-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Seguidor bang-bang de linha preta (<code class="text-slate-300">jacarev3.topicos.circuito</code>).</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-cyan-300 text-sm">
+                                <span>calibrar(robo, porta_sensor, …)</span>
+                                <button type="button" onclick="copyText('from jacarev3.topicos.circuito import calibrar\nlimiar = calibrar(robo, 3)', 'calibrar copiado!')" class="text-slate-500 hover:text-cyan-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Calibra limiar claro/escuro amostrando o sensor.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-cyan-300 text-sm">
+                                <span>desviar_obstaculo(...)</span>
+                                <button type="button" onclick="copyText('from jacarev3.topicos.desvio import desviar_obstaculo\ndesviar_obstaculo(robo, porta_sensor=4)', 'desviar_obstaculo copiado!')" class="text-slate-500 hover:text-cyan-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Anda até o ultrassônico ver obstáculo, gira e segue.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-cyan-300 text-sm">
+                                <span>controle_remoto(robo, fonte=…)</span>
+                                <button type="button" onclick="copyText('from jacarev3.topicos.controle import controle_remoto\ncontrole_remoto(robo)', 'controle_remoto copiado!')" class="text-slate-500 hover:text-cyan-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Loop de teleop com fonte de teclado, gamepad ou UDP.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sem robô / teclado -->
+                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col">
+                    <div class="flex items-center space-x-3 text-rose-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
+                        <i class="fas fa-flask text-xl"></i>
+                        <span>Sem robô &amp; teclado</span>
+                    </div>
+                    <ul class="space-y-4 text-xs font-sans">
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-rose-300 text-sm">
+                                <span>ConexaoFalsa(...)</span>
+                                <button type="button" onclick="copyText('from jacarev3 import RoboEV3\nfrom jacarev3.falso import ConexaoFalsa\n\nwith RoboEV3(conexao=ConexaoFalsa()) as robo:\n    robo.led(\'VERDE\')', 'ConexaoFalsa copiado!')" class="text-slate-500 hover:text-rose-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">EV3 simulado para aula sem hardware (<code class="text-slate-300">jacarev3.falso</code>).</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-rose-300 text-sm">
+                                <span>Teclado (with)</span>
+                                <button type="button" onclick="copyText('from jacarev3.teclado import Teclado\nwith Teclado() as teclas:\n    if teclas.pressionada(\'w\'):\n        print(\'frente\')', 'Teclado copiado!')" class="text-slate-500 hover:text-rose-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Leitura de teclas sem bloquear, só biblioteca padrão.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Acessibilidade -->
+                <div class="api-card bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col">
+                    <div class="flex items-center space-x-3 text-indigo-400 font-bold text-base mb-4 pb-3 border-b border-slate-800">
+                        <i class="fas fa-universal-access text-xl"></i>
+                        <span>Acessibilidade</span>
+                    </div>
+                    <ul class="space-y-4 text-xs font-sans">
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-indigo-300 text-sm">
+                                <span>executar_com_acessibilidade(desc, fn)</span>
+                                <button type="button" onclick="copyText('robo.executar_com_acessibilidade(\'Andar para frente\', lambda: robo.mover_base(30, 0, 1000))', 'acessibilidade copiado!')" class="text-slate-500 hover:text-indigo-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Anuncia no console (leitor de tela), bipe curto e executa a ação.</p>
+                        </li>
+                        <li class="api-item">
+                            <div class="flex items-start justify-between gap-2 font-mono font-bold text-indigo-300 text-sm">
+                                <span>AcessibilidadeRobo</span>
+                                <button type="button" onclick="copyText('from jacarev3.acessibilidade import AcessibilidadeRobo', 'AcessibilidadeRobo copiado!')" class="text-slate-500 hover:text-indigo-400 shrink-0"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <p class="text-slate-400 mt-1">Helper de anúncios e execução guiada para inclusão.</p>
+                        </li>
+                    </ul>
                 </div>
 
             </div>
+
+            <p class="text-center text-slate-500 text-sm mt-12">
+                Documentação em Markdown detalhada também em <code class="text-slate-400">docs/</code> do repositório
+                (<span class="text-slate-600">·</span>
+                <code class="text-slate-400">pip install jacarev3</code>
+            </p>
         </section>
 
-        <!-- Arquitetura do Sistema -->
+
         <section id="arquitetura" class="py-20 bg-slate-900/60 border-y border-slate-800">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center max-w-3xl mx-auto mb-16">
@@ -836,63 +1065,63 @@ robo.apitar(659, 200)</code>
             </div>
         </section>
 
-        <!-- BNCC e ODS -->
-        <section id="bncc" class="py-24 max-w-7xl mx-auto px-6 border-t border-slate-800/60">
-            <div class="grid lg:grid-cols-2 gap-12">
-                
-                <!-- BNCC -->
-                <div>
+                <!-- BNCC e ODS -->
+        <section id="bncc" class="py-24 border-t border-slate-800/60 overflow-x-hidden">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6">
+
+                <!-- BNCC (em cima) -->
+                <div class="text-center mb-8">
                     <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Diretrizes Nacionais</span>
-                    <h3 class="text-2xl sm:text-3xl font-bold mt-1 mb-6">Alinhamento BNCC Computação</h3>
-                    <div class="space-y-4">
-                        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-start space-x-4">
-                            <span class="bg-emerald-500/10 text-emerald-400 font-mono text-xs px-2.5 py-1 rounded-lg border border-emerald-500/20 shrink-0 font-bold">EF69CO02</span>
-                            <p class="text-slate-300 text-sm leading-relaxed">
-                                Elaborar algoritmos que envolvam instruções sequenciais, de repetição e de seleção usando uma linguagem de programação estruturada em Português.
-                            </p>
-                        </div>
-                        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-start space-x-4">
-                            <span class="bg-emerald-500/10 text-emerald-400 font-mono text-xs px-2.5 py-1 rounded-lg border border-emerald-500/20 shrink-0 font-bold">EF69CO03</span>
-                            <p class="text-slate-300 text-sm leading-relaxed">
-                                Descrever com precisão a solução de um problema, construindo o programa que implementa a solução de forma autônoma.
-                            </p>
-                        </div>
-                        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-start space-x-4">
-                            <span class="bg-emerald-500/10 text-emerald-400 font-mono text-xs px-2.5 py-1 rounded-lg border border-emerald-500/20 shrink-0 font-bold">EF69CO07</span>
-                            <p class="text-slate-300 text-sm leading-relaxed">
-                                Compreender o funcionamento básico de sistemas físicos e virtuais de comunicação aplicados a dispositivos robóticos conectados.
-                            </p>
-                        </div>
+                    <h3 class="text-2xl sm:text-3xl font-bold mt-1 text-balance">Alinhamento BNCC Computação</h3>
+                </div>
+                <div class="flex flex-col gap-4 mb-16 max-w-3xl mx-auto">
+                    <div class="bg-slate-900 border border-slate-800 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 text-left">
+                        <span class="self-start bg-emerald-500/10 text-emerald-400 font-mono text-xs px-2.5 py-1 rounded-lg border border-emerald-500/20 shrink-0 font-bold whitespace-nowrap">EF69CO02</span>
+                        <p class="text-slate-300 text-sm leading-relaxed min-w-0">
+                            Elaborar algoritmos que envolvam instruções sequenciais, de repetição e de seleção usando uma linguagem de programação estruturada em Português.
+                        </p>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 text-left">
+                        <span class="self-start bg-emerald-500/10 text-emerald-400 font-mono text-xs px-2.5 py-1 rounded-lg border border-emerald-500/20 shrink-0 font-bold whitespace-nowrap">EF69CO03</span>
+                        <p class="text-slate-300 text-sm leading-relaxed min-w-0">
+                            Descrever com precisão a solução de um problema, construindo o programa que implementa a solução de forma autônoma.
+                        </p>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 text-left">
+                        <span class="self-start bg-emerald-500/10 text-emerald-400 font-mono text-xs px-2.5 py-1 rounded-lg border border-emerald-500/20 shrink-0 font-bold whitespace-nowrap">EF69CO07</span>
+                        <p class="text-slate-300 text-sm leading-relaxed min-w-0">
+                            Compreender o funcionamento básico de sistemas físicos e virtuais de comunicação aplicados a dispositivos robóticos conectados.
+                        </p>
                     </div>
                 </div>
 
-                <!-- ODS ONU -->
-                <div>
-                    <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Sustentabilidade & Impacto</span>
-                    <h3 class="text-2xl sm:text-3xl font-bold mt-1 mb-6">Objetivos de Desenvolvimento Sustentável</h3>
-                    <div class="grid sm:grid-cols-3 gap-4">
-                        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl text-center flex flex-col justify-center">
-                            <div class="text-3xl font-black text-emerald-400 mb-2">ODS 4</div>
-                            <div class="text-xs font-semibold text-white mb-1">Educação de Qualidade</div>
-                            <div class="text-[11px] text-slate-400">Garantir educação inclusiva, equitativa e de qualidade para todos.</div>
-                        </div>
-                        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl text-center flex flex-col justify-center">
-                            <div class="text-3xl font-black text-teal-400 mb-2">ODS 9</div>
-                            <div class="text-xs font-semibold text-white mb-1">Inovação & Indústria</div>
-                            <div class="text-[11px] text-slate-400">Fomentar a inovação tecnológica com software livre e aberto.</div>
-                        </div>
-                        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl text-center flex flex-col justify-center">
-                            <div class="text-3xl font-black text-cyan-400 mb-2">ODS 10</div>
-                            <div class="text-xs font-semibold text-white mb-1">Redução de Desigualdades</div>
-                            <div class="text-[11px] text-slate-400">Democratizar o acesso às ciências de computação em escolas públicas.</div>
-                        </div>
+                <!-- ODS (embaixo, centralizados) -->
+                <div class="text-center mb-8">
+                    <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Sustentabilidade &amp; Impacto</span>
+                    <h3 class="text-2xl sm:text-3xl font-bold mt-1 text-balance">Objetivos de Desenvolvimento Sustentável</h3>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center flex flex-col justify-start min-h-[9.5rem]">
+                        <div class="text-2xl sm:text-3xl font-black text-emerald-400 mb-2">ODS 4</div>
+                        <div class="text-xs font-semibold text-white mb-2 leading-snug">Educação de Qualidade</div>
+                        <div class="text-[11px] text-slate-400 leading-relaxed">Garantir educação inclusiva, equitativa e de qualidade para todos.</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center flex flex-col justify-start min-h-[9.5rem]">
+                        <div class="text-2xl sm:text-3xl font-black text-teal-400 mb-2">ODS 9</div>
+                        <div class="text-xs font-semibold text-white mb-2 leading-snug">Inovação &amp; Indústria</div>
+                        <div class="text-[11px] text-slate-400 leading-relaxed">Fomentar a inovação tecnológica com software livre e aberto.</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center flex flex-col justify-start min-h-[9.5rem]">
+                        <div class="text-2xl sm:text-3xl font-black text-cyan-400 mb-2">ODS 10</div>
+                        <div class="text-xs font-semibold text-white mb-2 leading-snug">Redução de Desigualdades</div>
+                        <div class="text-[11px] text-slate-400 leading-relaxed">Democratizar o acesso às ciências de computação em escolas públicas.</div>
                     </div>
                 </div>
 
             </div>
         </section>
 
-        <!-- Perguntas Frequentes (FAQ Accordion) -->
+<!-- Perguntas Frequentes (FAQ Accordion) -->
         <section id="faq" class="py-24 max-w-4xl mx-auto px-6">
             <div class="text-center mb-16">
                 <span class="text-emerald-400 font-semibold text-sm tracking-widest uppercase">Tire Suas Dúvidas</span>
@@ -950,26 +1179,39 @@ robo.apitar(659, 200)</code>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800 py-12 bg-slate-950 text-slate-500 text-sm">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
-                    <i class="fas fa-robot text-sm"></i>
-                </div>
-                <div>
-                    <span class="text-slate-200 font-bold">jacarEV3</span>
-                    <span class="text-xs block text-slate-500">Desenvolvido para o Programa Embarque Digital (2026.2)</span>
+        <!-- Footer -->
+    <footer class="border-t border-slate-800 py-10 bg-slate-950 text-slate-500 text-sm">
+        <div class="max-w-7xl mx-auto px-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-5 text-center">
+            <!-- 1. jacarEV3 -->
+            <div class="flex items-center gap-3">
+                <img src="assets/logo.png" alt="" class="w-9 h-9 rounded-lg object-contain bg-slate-900/50 p-0.5">
+                <div class="text-left">
+                    <span class="text-slate-200 font-bold block leading-tight">jacarEV3</span>
+                    <span class="text-[11px] text-slate-500 leading-tight">Embarque Digital (2026.2)</span>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-6 text-xs">
-                <span>Licença MIT • Código Aberto</span>
-                <a href="https://github.com/i-barbosa/jacarev3" target="_blank" class="hover:text-slate-300 transition flex items-center space-x-1.5">
+            <span class="text-slate-600 font-light text-lg select-none px-1" aria-hidden="true">×</span>
+
+            <!-- 2. Licença + GitHub -->
+            <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs text-slate-400">
+                <span>Licença MIT · Código aberto</span>
+                <a href="https://github.com/i-barbosa/jacarev3" target="_blank" rel="noopener noreferrer"
+                   class="hover:text-emerald-400 transition inline-flex items-center gap-1.5">
                     <i class="fab fa-github"></i>
-                    <span>GitHub Repositório</span>
+                    <span>Repositório</span>
                 </a>
             </div>
+
+            <span class="text-slate-600 font-light text-lg select-none px-1" aria-hidden="true">×</span>
+
+            <!-- 3. Escama Code (logo maior) -->
+            <a href="https://github.com/Escama-Code" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-3 hover:opacity-90 transition group" title="Escama Code no GitHub">
+                <img src="assets/escama-logo.png" alt="Escama Code"
+                     class="h-14 sm:h-16 w-auto max-w-[14rem] object-contain logo-escama">
+                <span class="text-slate-300 font-semibold text-sm group-hover:text-emerald-400">Escama Code</span>
+            </a>
         </div>
     </footer>
 
